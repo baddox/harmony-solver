@@ -32,10 +32,10 @@ function make() {
                               onChange: (function ($$event) {
                                   return Curry._1(self[/* send */3], /* Change */[$$event.target.value]);
                                 })
-                            }), React.createElement("p", undefined, self[/* state */1][/* value */0]), React.createElement("ul", undefined, $$Array.mapi((function (index, string) {
+                            }), React.createElement("p", undefined, self[/* state */1][/* value */0]), React.createElement("ul", undefined, $$Array.mapi((function (index, token) {
                                     return React.createElement("li", {
                                                 key: String(index)
-                                              }, string);
+                                              }, NoteParser$ReactTemplate.toString(token));
                                   }), NoteParser$ReactTemplate.fromText(self[/* state */1][/* value */0]))));
             }),
           /* initialState */(function () {

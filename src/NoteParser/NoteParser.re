@@ -4,9 +4,9 @@
  +, -, +++, ---
  0, 1, 2, 10, -1, -2, -10
   */
-type parsed = {
-  letter: option(Note.letter),
-  accidental: option(Note.accidental),
+type token = {
+  letter: Note.letter,
+  accidental: Note.accidental,
   octaveShift: int,
   octave: option(int),
 };
@@ -73,7 +73,10 @@ let fromString = string => {
         | ((-1), Some(i)) => (0, Some(- i))
         | _ => (octaveShift', octave')
         };
-      Some({letter, accidental, octaveShift, octave});
+      switch (letter) {
+      | Some(letter) => Some({letter, accidental, octaveShift, octave})
+      | None => None
+      };
     | None => None
     };
   parsed;
@@ -99,6 +102,14 @@ let regex = Js.Re.fromString({|[\s,]+|});
 let fromText = string =>
   Js.String.splitByRe(regex, string)
   |> Array.map(s => {
-       Js.log(s);
-       s |> fromString |> toString;
+       Js.log(string);
+       string |> fromString;
      });
+
+let toNoteWithOctave = ({letter, accidental, octave}) : NoteWithOctave.t => {
+  let note: Note.t = (letter, accidental);
+  switch (octave) {
+  | Some(octave) => (note, octave)
+  | None => (note, 0)
+  };
+};

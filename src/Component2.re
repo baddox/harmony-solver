@@ -39,9 +39,9 @@ let make = _children => {
       <ul>
         (
           NoteParser.fromText(self.state.value)
-          |> Array.mapi((index, string) =>
+          |> Array.mapi((index, token) =>
                <li key=(index |> string_of_int)>
-                 (ReasonReact.string(string))
+                 (ReasonReact.string(token |> NoteParser.toString))
                </li>
              )
           |> ReasonReact.array

@@ -82,7 +82,7 @@ function fromString(string) {
       var octaveShift = match[3];
       var octave = match[4];
       var letter$1 = letter ? Note$ReactTemplate.letterFromString(letter[0]) : /* None */0;
-      var accidental$1 = accidental ? Note$ReactTemplate.accidentalFromString(accidental[0]) : /* None */0;
+      var accidental$1 = accidental ? Note$ReactTemplate.accidentalFromString(accidental[0]) : /* None */3;
       var octaveShift$prime = octaveShift ? octaveShiftFromString(octaveShift[0]) : 0;
       var octave$prime = octave ? /* Some */[Caml_format.caml_int_of_string(octave[0])] : /* None */0;
       var match$1 = octaveShift$prime !== -1 ? /* tuple */[
@@ -97,12 +97,16 @@ function fromString(string) {
               octave$prime
             ]
         );
-      return /* Some */[/* record */[
-                /* letter */letter$1,
-                /* accidental */accidental$1,
-                /* octaveShift */match$1[0],
-                /* octave */match$1[1]
-              ]];
+      if (letter$1) {
+        return /* Some */[/* record */[
+                  /* letter */letter$1[0],
+                  /* accidental */accidental$1,
+                  /* octaveShift */match$1[0],
+                  /* octave */match$1[1]
+                ]];
+      } else {
+        return /* None */0;
+      }
     }
   } else {
     return /* None */0;
@@ -126,10 +130,31 @@ function toString(parsed) {
 var regex$1 = new RegExp("[\\s,]+");
 
 function fromText(string) {
-  return $$Array.map((function (s) {
-                console.log(s);
-                return toString(fromString(s));
+  return $$Array.map((function () {
+                console.log(string);
+                return fromString(string);
               }), string.split(regex$1));
+}
+
+function toNoteWithOctave(param) {
+  var octave = param[/* octave */3];
+  var note_000 = param[/* letter */0];
+  var note_001 = param[/* accidental */1];
+  var note = /* tuple */[
+    note_000,
+    note_001
+  ];
+  if (octave) {
+    return /* tuple */[
+            note,
+            octave[0]
+          ];
+  } else {
+    return /* tuple */[
+            note,
+            0
+          ];
+  }
 }
 
 exports.print = print;
@@ -139,4 +164,5 @@ exports.fromString = fromString;
 exports.toString = toString;
 exports.regex = regex$1;
 exports.fromText = fromText;
+exports.toNoteWithOctave = toNoteWithOctave;
 /* regex Not a pure module */

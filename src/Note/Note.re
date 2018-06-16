@@ -8,9 +8,10 @@ type letter =
   | G;
 
 type accidental =
-  | Natural
   | Sharp
-  | Flat;
+  | Flat
+  | Natural
+  | None;
 
 type t = (letter, accidental);
 
@@ -28,9 +29,10 @@ let toSemitones = ((letter, accidental): t) => {
     };
   let shift =
     switch (accidental) {
-    | Natural => 0
     | Sharp => 1
     | Flat => (-1)
+    | Natural => 0
+    | None => 0
     };
   base + shift;
 };
@@ -54,31 +56,30 @@ let letterFromString = string =>
 
 let letterToString = letter =>
   switch (letter) {
-  | Some(A) => "a"
-  | Some(B) => "b"
-  | Some(C) => "c"
-  | Some(D) => "d"
-  | Some(E) => "e"
-  | Some(F) => "f"
-  | Some(G) => "g"
-  | None => ""
+  | A => "a"
+  | B => "b"
+  | C => "c"
+  | D => "d"
+  | E => "e"
+  | F => "f"
+  | G => "g"
   };
 
 let accidentalFromString = string =>
   switch (string) {
-  | ""
-  | "n" => Some(Natural)
   | "s"
-  | "#" => Some(Sharp)
+  | "#" => Sharp
   | "b"
-  | "f" => Some(Flat)
+  | "f" => Flat
+  | "n" => Natural
+  | "" => None
   | _ => None
   };
 
 let accidentalToString = accidental =>
   switch (accidental) {
-  | Some(Natural) => ""
-  | Some(Sharp) => "#"
-  | Some(Flat) => "b"
+  | Sharp => "#"
+  | Flat => "b"
+  | Natural => "n"
   | None => ""
   };

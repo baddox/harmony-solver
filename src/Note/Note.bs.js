@@ -6,6 +6,7 @@ var Caml_int32 = require("bs-platform/lib/js/caml_int32.js");
 var CamlinternalOO = require("bs-platform/lib/js/camlinternalOO.js");
 
 function toSemitones(param) {
+  var accidental = param[1];
   var base;
   switch (param[0]) {
     case 0 : 
@@ -31,19 +32,9 @@ function toSemitones(param) {
         break;
     
   }
-  var shift;
-  switch (param[1]) {
-    case 0 : 
-        shift = 0;
-        break;
-    case 1 : 
-        shift = 1;
-        break;
-    case 2 : 
-        shift = -1;
-        break;
-    
-  }
+  var shift = accidental !== 1 ? (
+      accidental !== 0 ? 0 : 1
+    ) : -1;
   return base + shift | 0;
 }
 
@@ -91,58 +82,53 @@ function letterFromString(string) {
 }
 
 function letterToString(letter) {
-  if (letter) {
-    switch (letter[0]) {
-      case 0 : 
-          return "a";
-      case 1 : 
-          return "b";
-      case 2 : 
-          return "c";
-      case 3 : 
-          return "d";
-      case 4 : 
-          return "e";
-      case 5 : 
-          return "f";
-      case 6 : 
-          return "g";
-      
-    }
-  } else {
-    return "";
+  switch (letter) {
+    case 0 : 
+        return "a";
+    case 1 : 
+        return "b";
+    case 2 : 
+        return "c";
+    case 3 : 
+        return "d";
+    case 4 : 
+        return "e";
+    case 5 : 
+        return "f";
+    case 6 : 
+        return "g";
+    
   }
 }
 
 function accidentalFromString(string) {
   switch (string) {
+    case "" : 
+        return /* None */3;
     case "b" : 
     case "f" : 
-        return /* Some */[/* Flat */2];
-    case "" : 
+        return /* Flat */1;
     case "n" : 
-        return /* Some */[/* Natural */0];
+        return /* Natural */2;
     case "#" : 
     case "s" : 
-        return /* Some */[/* Sharp */1];
+        return /* Sharp */0;
     default:
-      return /* None */0;
+      return /* None */3;
   }
 }
 
 function accidentalToString(accidental) {
-  if (accidental) {
-    switch (accidental[0]) {
-      case 0 : 
-          return "";
-      case 1 : 
-          return "#";
-      case 2 : 
-          return "b";
-      
-    }
-  } else {
-    return "";
+  switch (accidental) {
+    case 0 : 
+        return "#";
+    case 1 : 
+        return "b";
+    case 2 : 
+        return "n";
+    case 3 : 
+        return "";
+    
   }
 }
 
