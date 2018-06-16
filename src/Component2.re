@@ -18,7 +18,9 @@ let component = ReasonReact.reducerComponent("Example");
 let make = _children => {
   /* spread the other default fields of component here and override a few */
   ...component,
-  initialState: () => {value: ""},
+  initialState: () => {
+    value: "cs d a, cs d b a, cs d fs e d cs d, b d fs e d",
+  },
   /* State transitions */
   reducer: (action, state) =>
     switch (action) {
@@ -34,5 +36,16 @@ let make = _children => {
         onChange=(event => self.send(Change(getValue(event))))
       />
       <p> (ReasonReact.string(self.state.value)) </p>
+      <ul>
+        (
+          NoteParser.fromText(self.state.value)
+          |> Array.mapi((index, string) =>
+               <li key=(index |> string_of_int)>
+                 (ReasonReact.string(string))
+               </li>
+             )
+          |> ReasonReact.array
+        )
+      </ul>
     </div>,
 };

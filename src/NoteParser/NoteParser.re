@@ -93,3 +93,12 @@ let toString = parsed =>
     letter ++ accidental ++ octaveShift ++ octave;
   | None => ""
   };
+
+let regex = Js.Re.fromString({|[\s,]+|});
+
+let fromText = string =>
+  Js.String.splitByRe(regex, string)
+  |> Array.map(s => {
+       Js.log(s);
+       s |> fromString |> toString;
+     });

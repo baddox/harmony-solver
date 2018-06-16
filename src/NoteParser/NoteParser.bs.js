@@ -123,10 +123,20 @@ function toString(parsed) {
   }
 }
 
+var regex$1 = new RegExp("[\\s,]+");
+
+function fromText(string) {
+  return $$Array.map((function (s) {
+                console.log(s);
+                return toString(fromString(s));
+              }), string.split(regex$1));
+}
+
 exports.print = print;
 exports.octaveShiftToString = octaveShiftToString;
 exports.octaveShiftFromString = octaveShiftFromString;
-exports.regex = regex;
 exports.fromString = fromString;
 exports.toString = toString;
+exports.regex = regex$1;
+exports.fromText = fromText;
 /* regex Not a pure module */
